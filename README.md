@@ -1,13 +1,13 @@
 # Azure Active Directory B2C with WeChat as Identify Provider 
 
-This is a repository contains code and document about how to integrate Azure Active Directory (AD) B2C with WeChat as Identify Provider plus enabling MFA to validate user phone number and using RESTAPI to validate user input when signup. 
+This is a repository contains code and document about how to integrate Azure Active Directory (AD) B2C with WeChat as Identify Provider plus using RESTAPI to validate user input when signup. 
 
 Here are the key features of this project and custom policy are used to implement these function.
 
 * WeChat as IDP
-* MFA to validate user mobile phone
-* Invitation Code Check
 * WeChat union id stored into Active Directory
+* Invitation Code Check
+
 
 There several applications in this repository.
 1. server app, which has an API protected by Azure AD B2C. User can invoke it after signin the AD.
@@ -108,6 +108,46 @@ var config = {
 
 ### Here is a screenshot to show a demo of loading user info of WeChat.
 ![upload custom policy files](./screenshots/upload-custom-policy-userinfo-demo.gif)
+
+
+## Add Invitation Code check
+
+In this section, an Azure Function is used to check if the user input a correct invitation code. And some modification of custom policy files.
+1. [TrustFrameworkBase.xml](/custompolicy/custom-policy-wechat-2-wechat-invitation-code/TrustFrameworkBase.xml)
+2. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-2-wechat-invitation-code/TrustFrameworkExtensions.xml)
+
+Here is code of Azure Function, it check if the user input is "12345" otherwise it will retunr error.
+```javascript
+module.exports = function (context, req) {
+    context.log('JavaScript HTTP trigger function processed a request.');
+
+    if (req.query.code || (req.body && req.body.code)) {
+        var code = req.query.code || req.body.code
+        if(code === '12345') {
+            context.res = {
+                status: 200
+            };
+            context.done();
+            return 
+        }
+    }
+    context.res = {
+        status: 400,
+        body: {version: "1.0.0", status: 400, userMessage:"Invalid Code"},
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    context.done();
+};
+```
+
+The Azure Function endpoint is like this
+https://myaadb2crestapi.azurewebsites.net/api/HttpTriggerJS1
+
+
+### Here is a screenshot to show a demo of invitation code checking.
+![upload custom policy files](./screenshots/upload-custom-policy-invitation-code-demo.gif)
 
 
 
