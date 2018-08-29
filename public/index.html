@@ -21,9 +21,8 @@
                 <h5>id token:</h5><p> {{idtoken}}</p>
                 <button class="btn btn-success btn-block" @click="requestAPI()">Call API</button>
                 <h5>API Return:</h5><pre class="card-text" v-html="JSON.stringify(apiRes, null, 4)"></pre>
-                
-                
-               
+                <img :src="headimgurl">
+                <hr>
                 <button class="btn btn-danger btn-block" onclick="location.href='/client'">Logoff</button>
             </div>
 
@@ -83,6 +82,9 @@
                         }).done(function (data) {
 
                             that.apiRes = data
+                            if(that.apiRes.claims && that.apiRes.claims.extension_headimgurl) {
+                                that.headimgurl = that.apiRes.claims.extension_headimgurl
+                            }
                         })
                         .fail(function (jqXHR, textStatus) {
 

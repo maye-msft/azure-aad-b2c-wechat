@@ -66,11 +66,49 @@ var config = {
 ![get loginURL](./screenshots/getloginurl.gif)
 
 
-## Restart local node app
+### Restart local node app
 ```shell
 node ./server.js
 ```
-Here is a screenshots for this build-in policy demo
+Here is a screenshot for this build-in policy demo
 ![Image of build-in policy demo](./screenshots/demo-build-in.gif)
+
+## Get WeChat User Information after signin.
+
+### Here is a document introduce what is Azure AD B2C and how to create custom policy. in this document, there is a starter kit for custom policy composing. 
+
+https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-get-started-custom
+
+To integrate WeChat 4 custom policy files need to be uploaded.
+
+1. [TrustFrameworkBase.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/TrustFrameworkBase.xml)
+2. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/TrustFrameworkExtensions.xml)
+3. [SignUpOrSignin.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/SignUpOrSignin.xml)
+4. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/ProfileEdit.xml)
+
+The four files are from the starter kit of SocialAccounts, which is for FaceBook.
+[/custompolicy/SocialAccounts/](/custompolicy/SocialAccounts/)
+
+### Here is a screenshot to show how to upload the custom files and get the new loginURL from custom policy.
+![upload custom policy files](./screenshots/upload-custom-policy-userinfo.gif)
+
+
+### Here is a screenshot to get LoginURL from custom policy.
+![get loginURL](./screenshots/upload-custom-policy-userinfo-loginURL.gif)
+
+### Edit public/config.js and change into the policyName and loginURL.
+```javascript
+var config = {
+    tenantID : "myaadb2cpoc.onmicrosoft.com",
+    clientID : "fa61f18a-c198-456f-9dc8-f9fe95726073",
+    policyName : "B2C_1A_signup_signin",
+    loginURL: "https://login.microsoftonline.com/myaadb2cpoc.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_signup_signin&client_id=067f7ac9-f226-4593-85d2-3293c73d2b08&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fclient%2F&scope=openid%20https%3A%2F%2Fmyaadb2cpoc.onmicrosoft.com%2Fserver%2Fread%20https%3A%2F%2Fmyaadb2cpoc.onmicrosoft.com%2Fserver%2Fuser_impersonation%20https%3A%2F%2Fmyaadb2cpoc.onmicrosoft.com%2Fserver%2Fwrite&response_type=id_token%20token&prompt=login",
+}
+```
+
+### Here is a screenshot to show a demo of loading user info of WeChat.
+![upload custom policy files](./screenshots/upload-custom-policy-userinfo-demo.gif)
+
+
 
 To be continued.
