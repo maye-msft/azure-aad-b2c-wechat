@@ -84,7 +84,7 @@ To integrate WeChat 4 custom policy files need to be uploaded.
 1. [TrustFrameworkBase.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/TrustFrameworkBase.xml)
 2. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/TrustFrameworkExtensions.xml)
 3. [SignUpOrSignin.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/SignUpOrSignin.xml)
-4. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/ProfileEdit.xml)
+4. [ProfileEdit.xml](/custompolicy/custom-policy-wechat-1-wechat-userinfo/ProfileEdit.xml)
 
 The four files are from the starter kit of SocialAccounts, which is for FaceBook.
 [/custompolicy/SocialAccounts/](/custompolicy/SocialAccounts/)
@@ -149,6 +149,22 @@ https://myaadb2crestapi.azurewebsites.net/api/HttpTriggerJS1
 ### Here is a screenshot to show a demo of invitation code checking.
 ![upload custom policy files](./screenshots/upload-custom-policy-invitation-code-demo.gif)
 
+## To support native mobile app, we need wechat SDK to get authorization code, we need to change the custom policy file, to make Azure AD B2C not to get teh code but get the access_tioken only.
 
+We need the three custom policy files as below to upload.
+1. [TrustFrameworkBase.xml](/custompolicy/custom-policy-wechat-3-mobile/TrustFrameworkBase.xml)
+2. [TrustFrameworkExtensions.xml](/custompolicy/custom-policy-wechat-3-mobile/TrustFrameworkExtensions.xml)
+3. [SignUpOrSignin.xml](/custompolicy/custom-policy-wechat-3-mobile/SignUpOrSignin.xml)
 
-To be continued.
+In this repository, there is a html
+
+[mobile.html](/mobile.html)
+
+It can get wechat authorization code and then ask the api 
+http://localhost:5000/wechattoken/:code to get wechat access_token and openid.
+with the two values Azure AD B2C can signin or signup the wechat user, some logic is defined in the three custom policy files.
+
+### Here is a screenshot to show the demo.
+![mobile demo](./screenshots/upload-custom-policy-mobile-demo.gif)
+
+Please free feel to create issue, if you get any problem on this.

@@ -3,6 +3,8 @@ var app = express();
 var passport = require("passport");
 var BearerStrategy = require('passport-azure-ad').BearerStrategy;
 var config = require('./public/config.js')
+var axios = require('axios');
+
 
 
 var tenantID = config.tenantID;
@@ -55,6 +57,32 @@ app.get("/server",
             res.status(403).json({'error': 'insufficient_scope'}); 
         }
     }
+);
+
+app.get("/wechattoken/:code",
+    
+    function (req, res) {
+        console.log(req.params.code);
+        const instance = axios.create({
+            baseURL: 'https://api.weixin.qq.com/sns/oauth2/',
+            timeout: 1000,
+            headers: {'X-Custom-Header': 'foobar'}
+          });
+
+        // Make a request for a user with a given ID
+        instance.get(`/access_token?appid=<wechat-app-id>&secret=<wechat-app-secret>&code=${req.params.code}&grant_type=authorization_code`)
+        .then(function (response) {
+            res.status(200).json(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.status(400).json({'error': 'error'}); 
+        })
+        .then(function () {
+        // always executed
+        });
+    }
+
 );
 
 
