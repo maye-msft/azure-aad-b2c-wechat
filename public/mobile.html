@@ -47,6 +47,7 @@
                     idtoken:null,
                     apiRes:{},
                     loginURL:global.loginURL_mobile,
+                    wechat_appid:global.Web_App_AppID,
                     wechat_authcode:null,
                     wechat_tokens:null,
                 },
@@ -63,10 +64,11 @@
                 },
                 methods: {
                     getWeChatAuthCode(){
+                        var that = this
                         var obj = new WxLogin({
                             self_redirect:false,
                             id:"login_container", 
-                            appid: "wx90d77510513e9915", 
+                            appid: that.wechat_appid,//"wx90d77510513e9915", 
                             scope: "snsapi_login", 
                             //redirect_uri: encodeURI("https://login.microsoftonline.com/index.html"),
                             redirect_uri: encodeURI("http://localhost:5000/client/mobile.html"),
@@ -113,7 +115,9 @@
                             // }
                             that.wechat_tokens = data
                             if(that.wechat_tokens.access_token) {
-                                location.href = that.loginURL+'&wechatToken='+that.wechat_tokens.access_token+'&wechatopenid='+that.wechat_tokens.openid
+                                var url = that.loginURL+'&wechatToken='+that.wechat_tokens.access_token+'&wechatopenid='+that.wechat_tokens.openid;
+                                console.log(url)
+                                location.href = url 
                             } else {
                                 alert('Cannot get access_token!')
                             }

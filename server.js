@@ -10,6 +10,8 @@ var axios = require('axios');
 var tenantID = config.tenantID;
 var clientID = config.clientID;
 var policyName = config.policyName;
+var Web_App_AppID = config.Web_App_AppID;
+var Web_App_APPsecret = config.Web_App_APPsecret
 
 var options = {
     identityMetadata: "https://login.microsoftonline.com/" + tenantID + "/v2.0/.well-known/openid-configuration/",
@@ -70,7 +72,8 @@ app.get("/wechattoken/:code",
           });
 
         // Make a request for a user with a given ID
-        instance.get(`/access_token?appid=<wechat-app-id>&secret=<wechat-app-secret>&code=${req.params.code}&grant_type=authorization_code`)
+        instance.get(`/access_token?appid=${Web_App_AppID}&secret=${Web_App_APPsecret}&code=${req.params.code}&grant_type=authorization_code`)
+        //instance.get(`/access_token?appid=${Mobile_App_AppID}&secret=${Mobile_App_APPsecret}&code=${req.params.code}&grant_type=authorization_code`)
         .then(function (response) {
             res.status(200).json(response.data);
         })
